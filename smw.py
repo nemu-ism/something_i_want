@@ -1,12 +1,11 @@
 import json
 import sys
-from url_generator import json_generator
+from generator_url import generator_json
 
 args = sys.argv
 
 def load_json(d):
     data = json.loads(d)
-    #print(json.dumps(data, ensure_ascii=False, sort_keys=False, indent=4)); sys.exit()
     return data
 
 def print_list(data):
@@ -45,7 +44,7 @@ def print_list(data):
 
 if __name__ == '__main__':
     try:
-        json_generated = json_generator()
+        json_generated = generator_json()
         print_list(load_json(json_generated))
     except:
         print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
