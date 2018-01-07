@@ -1,25 +1,8 @@
 import json
 import sys
-import urllib.parse
-import urllib.request
+from url_generator import json_generator
 
 args = sys.argv
-
-def json_generator():
-    url = 'https://shopping.yahooapis.jp/ShoppingWebService/V1/json/itemSearch?'
-    appid = 'dj00aiZpPU1YWU1IRXYwaDhqeCZzPWNvbnN1bWVyc2VjcmV0Jng9MDY-'
-    params = urllib.parse.urlencode(
-        {'appid': appid,
-         'query':'パソコン',
-         'price_to':50000,
-         'hits':10,
-         'offset':0,
-         'availability':1,
-         'sort':'+price',
-         'condition':'all'})
-
-    response = urllib.request.urlopen(url + params)
-    return response.read()
 
 def do_json(s):
     data = json.loads(s)
@@ -33,7 +16,7 @@ def do_json(s):
     for k, v in item_list.items():
         try:
             number = int(v["_attributes"]["index"])
-            name = v["Headline"]
+            name = v["Name"]
             url = v["Url"]
             condition = v["Condition"]
             price = int(v["Price"]["_value"])
@@ -55,7 +38,12 @@ def do_json(s):
         print(' ' *6, results[i][1], '{:,}円(税込)'.format(results[i][2]),
               '平均評価{0:}点({1:,}人中)'.format(results[i][3], results[i][4]))
         print(' ' *6, '商品ページ：', results[i][5])
+    print(type(args[1:]))
 
 if __name__ == '__main__':
-    json_generated = json_generator()
-    do_json(json_generated)
+    try:
+        json_generated = json_generator()
+        do_json(json_generated)
+    except:
+        print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
+        sys.exit()
