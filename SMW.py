@@ -14,7 +14,9 @@ def json_generator():
          'price_to':50000,
          'hits':10,
          'offset':0,
-         'availability':1})
+         'availability':1,
+         'sort':'+price',
+         'condition':'all'})
 
     response = urllib.request.urlopen(url + params)
     return response.read()
