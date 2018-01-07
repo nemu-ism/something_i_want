@@ -4,10 +4,12 @@ from url_generator import json_generator
 
 args = sys.argv
 
-def do_json(s):
-    data = json.loads(s)
+def load_json(d):
+    data = json.loads(d)
     #print(json.dumps(data, ensure_ascii=False, sort_keys=False, indent=4)); sys.exit()
+    return data
 
+def print_list(data):
     hits_total = int(data["ResultSet"]["totalResultsAvailable"])
     hits_offset = int(data["ResultSet"]["firstResultPosition"])
     item_list = data["ResultSet"]["0"]["Result"]
@@ -31,6 +33,7 @@ def do_json(s):
     print('検索ワード：', query)
     print('{0:,}件中　{1:,}～{2:,}件'.format(hits_total, hits_offset, hits_offset+9))
     print('-' * 40)
+
     results_keys = list(results.keys())
     results_keys.sort()
     for i in results_keys:
@@ -43,7 +46,7 @@ def do_json(s):
 if __name__ == '__main__':
     try:
         json_generated = json_generator()
-        do_json(json_generated)
+        print_list(load_json(json_generated))
     except:
         print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
         sys.exit()
