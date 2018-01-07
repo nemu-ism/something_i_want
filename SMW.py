@@ -5,14 +5,17 @@ import urllib.parse
 import urllib.request
 import json
 
+args = sys.argv
+
 def yapi_topics():
     url = 'https://shopping.yahooapis.jp/ShoppingWebService/V1/json/itemSearch?'
-    id = 'dj00aiZpPU1YWU1IRXYwaDhqeCZzPWNvbnN1bWVyc2VjcmV0Jng9MDY-'
+    appid = 'dj00aiZpPU1YWU1IRXYwaDhqeCZzPWNvbnN1bWVyc2VjcmV0Jng9MDY-'
     params = urllib.parse.urlencode(
-        {'appid': id,
+        {'appid': appid,
          'query':'パソコン',
          'price_to':50000,
-         'hits':20,
+         'hits':10,
+         'offset':0,
          'availability':1})
 
     response = urllib.request.urlopen(url + params)
@@ -20,9 +23,11 @@ def yapi_topics():
 
 def do_json(s):
     data = json.loads(s)
-    print(json.dumps(data, ensure_ascii=False, sort_keys=False, indent=4)); sys.exit()
+    #print(json.dumps(data, ensure_ascii=False, sort_keys=False, indent=4)); sys.exit()
 
     #jsonの階層の"Result"以下を辞書にする。keyは番号：その次の配列がvalueになっている
+    hits_total = int(data["ResultSet"]["totalResultsAvailable"])
+    hits_offset = int(data["ResultSet"]["firstResultPosition"])
     item_list = data["ResultSet"]["0"]["Result"]
 
     #空のディクショナリを作る
@@ -42,7 +47,8 @@ def do_json(s):
                 query = v["Query"]
 
     print('-' * 40)
-    print("検索ワード："+ query)
+    print('検索ワード：'+ query)
+    print('{0:,}件中　{1:,}～{2:,}件'.format(hits_total, hits_offset, hits_offset+9))
     print('-' * 40)
     results_keys = list(results.keys())
     results_keys.sort()
