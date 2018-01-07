@@ -13,6 +13,9 @@ def print_list(data):
     hits_offset = int(data["ResultSet"]["firstResultPosition"])
     item_list = data["ResultSet"]["0"]["Result"]
 
+    #print(json.dumps(data, ensure_ascii=False, sort_keys=False, indent=4)); sys.exit()
+
+
     results = {}
     for k, v in item_list.items():
         try:
@@ -40,11 +43,11 @@ def print_list(data):
         print(' ' *6, results[i][1], '{:,}円(税込)'.format(results[i][2]),
               '平均評価{0:}点({1:,}人中)'.format(results[i][3], results[i][4]))
         print(' ' *6, '商品ページ：', results[i][5])
-    print(type(args[1:]))
 
 if __name__ == '__main__':
     try:
-        json_generated = generator_json()
+        lest = args[1:]
+        json_generated = generator_json(lest)
         print_list(load_json(json_generated))
     except:
         print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
