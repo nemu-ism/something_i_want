@@ -28,8 +28,8 @@ def print_list(data):
             if k == "Request":
                 query = v["Query"]
 
+    # ifs are dirty :(
     dic = generator_url.generator_dic(args[1:])
-    print(dic)
     print('-' * 40)
     if 'sort' in dic:
         print(dic['sort'], end='')
