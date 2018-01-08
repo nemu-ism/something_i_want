@@ -1,7 +1,8 @@
 import json
 import sys
-from generator_url import generator_json
+import generator_url
 
+# sys.argv = terminal入力
 args = sys.argv
 
 def load_json(d):
@@ -12,10 +13,6 @@ def print_list(data):
     hits_total = int(data["ResultSet"]["totalResultsAvailable"])
     hits_offset = int(data["ResultSet"]["firstResultPosition"])
     item_list = data["ResultSet"]["0"]["Result"]
-
-    #print(json.dumps(data, ensure_ascii=False, sort_keys=False, indent=4)); sys.exit()
-
-
     results = {}
     for k, v in item_list.items():
         try:
@@ -31,8 +28,21 @@ def print_list(data):
             if k == "Request":
                 query = v["Query"]
 
+    dic = generator_url.generator_dic(args[1:])
+    print(dic)
     print('-' * 40)
+    if 'sort' in dic:
+        print(dic['sort'], end='')
     print('検索ワード：', query)
+    if 'condition' in dic:
+        print('状態:{:} only'.format(dic['condition']))
+    if 'price_from' or 'price_to' in dic:
+        print('価格：', end='')
+        if 'price_from' in dic:
+            print('{:,}円から'.format(int(dic['price_from'])), end='')
+        if 'price_to' in dic:
+            print('{:,}円まで'.format(int(dic['price_to'])), end='')
+        print('')
     print('{0:,}件中　{1:,}～{2:,}件'.format(hits_total, hits_offset, hits_offset+9))
     print('-' * 40)
 
@@ -44,10 +54,11 @@ def print_list(data):
               '平均評価{0:}点({1:,}人中)'.format(results[i][3], results[i][4]))
         print(' ' *6, '商品ページ：', results[i][5])
 
+# main
 if __name__ == '__main__':
     try:
-        lest = args[1:]
-        json_generated = generator_json(lest)
+        requests = args[1:]
+        json_generated = generator_url.generator_json(requests)
         print_list(load_json(json_generated))
     except:
         print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
