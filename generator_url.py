@@ -13,12 +13,19 @@ def generator_json(reqests):
                      'availability':1,
                      'sort':'-score',
                      'condition':'all'}
-    dic = generator_dic(reqests)
+    try:
+        dic = generator_dic(reqests)
+    except:
+        print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
 
     requests_base.update(dic)
     params = urllib.parse.urlencode(requests_base)
 
-    response = urllib.request.urlopen(url + params)
+    try:
+        response = urllib.request.urlopen(url + params)
+    except:
+        print("リクエスト送信に失敗しました。接続を確認してください。")
+
     return response.read()
 
 # request_list -> request_dict

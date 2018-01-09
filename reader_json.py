@@ -1,6 +1,9 @@
+import json
 import generator_url
 
-def print_list(data, args):
+def print_list(response, args):
+    data = json.loads(response)
+
     hits_total = int(data["ResultSet"]["totalResultsAvailable"])
     hits_offset = int(data["ResultSet"]["firstResultPosition"])
     item_list = data["ResultSet"]["0"]["Result"]
