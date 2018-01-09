@@ -1,6 +1,8 @@
 import json
 import generator_url
 
+generator = generator_url.UrlGenerator()
+
 def print_list(response, args):
     data = json.loads(response)
 
@@ -22,8 +24,8 @@ def print_list(response, args):
             if k == "Request":
                 query = v["Query"]
 
-    # ifs are dirty :(
-    dic = generator_url.generator_dic(args[1:])
+    # many ifs are dirty :(
+    dic = generator.generator_dic(args[1:])
     print('-' * 40)
     if 'sort' in dic:
         print(dic['sort'], end='')

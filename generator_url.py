@@ -1,47 +1,43 @@
 import urllib.parse
 import urllib.request
 
-def generator_json(reqests):
-    url = 'https://shopping.yahooapis.jp/ShoppingWebService/V1/json/itemSearch?'
-    appid = 'dj00aiZpPU1YWU1IRXYwaDhqeCZzPWNvbnN1bWVyc2VjcmV0Jng9MDY-'
-    requests_base = {'appid': appid,
-                     'query':'python',
-                     'price_from':0,
-                     'price_to':99999999,
-                     'hits':'10',
-                     'offset':0,
-                     'availability':1,
-                     'sort':'-score',
-                     'condition':'all'}
-    try:
-        dic = generator_dic(reqests)
-    except:
-        print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
+class UrlGenerator:
+    def __init__(self):
+        pass
 
-    requests_base.update(dic)
-    params = urllib.parse.urlencode(requests_base)
+    def generator_json(self, reqests):
+        url = 'https://shopping.yahooapis.jp/ShoppingWebService/V1/json/itemSearch?'
+        appid = 'dj00aiZpPU1YWU1IRXYwaDhqeCZzPWNvbnN1bWVyc2VjcmV0Jng9MDY-'
+        requests_base = {'appid': appid,
+                         'query':'python',
+                         'price_from':0,
+                         'price_to':99999999,
+                         'hits':'10',
+                         'offset':0,
+                         'availability':1,
+                         'sort':'-score',
+                         'condition':'all'}
+        try:
+            dic = self.generator_dic(reqests)
+        except:
+            print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
 
-    try:
-        response = urllib.request.urlopen(url + params)
-    except:
-        print("リクエスト送信に失敗しました。接続を確認してください。")
+        requests_base.update(dic)
+        params = urllib.parse.urlencode(requests_base)
 
-    return response.read()
+        try:
+            response = urllib.request.urlopen(url + params)
+        except:
+            print("リクエスト送信に失敗しました。接続を確認してください。")
 
-# request_list -> request_dict
-def generator_dic(requests):
-    requests_processed = []
-    for w in requests:
-        requests_processed.append(w.split(':'))
-    requests_dic = dict(requests_processed)
-    if 'offset' in requests_dic:
-        requests_dic['offset'] = int(requests_dic['offset'])-1
-    return requests_dic
+        return response.read()
 
-# test
-if __name__ == '__main__':
-    list = ['query:hatsune', 'offset:11']
-    #miku = generator_json(list)
-    #data = json.loads(miku)
-    #print(json.dumps(data, ensure_ascii=False, sort_keys=False, indent=4))
-    print(generator_dic(list))
+    # request_list -> request_dict
+    def generator_dic(self, requests):
+        requests_processed = []
+        for w in requests:
+            requests_processed.append(w.split(':'))
+        requests_dic = dict(requests_processed)
+        if 'offset' in requests_dic:
+            requests_dic['offset'] = int(requests_dic['offset'])-1
+        return requests_dic
