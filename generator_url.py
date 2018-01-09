@@ -5,7 +5,7 @@ class UrlGenerator:
     def __init__(self):
         pass
 
-    def generator_json(self, reqests):
+    def generate_json(self, reqests):
         url = 'https://shopping.yahooapis.jp/ShoppingWebService/V1/json/itemSearch?'
         appid = 'dj00aiZpPU1YWU1IRXYwaDhqeCZzPWNvbnN1bWVyc2VjcmV0Jng9MDY-'
         requests_base = {'appid': appid,
@@ -18,7 +18,7 @@ class UrlGenerator:
                          'sort':'-score',
                          'condition':'all'}
         try:
-            dic = self.generator_dic(reqests)
+            dic = self.generate_dic(reqests)
         except:
             print("リクエスト内容に誤りがありました。リクエスト内容を確認してください。")
 
@@ -33,7 +33,7 @@ class UrlGenerator:
         return response.read()
 
     # request_list -> request_dict
-    def generator_dic(self, requests):
+    def generate_dic(self, requests):
         requests_processed = []
         for w in requests:
             requests_processed.append(w.split(':'))
