@@ -3,7 +3,7 @@ import main
 import generator_url
 import reader_json
 
-# sys.argv = terminal入力
+# sys.argv = terminal argument
 args = sys.argv
 main = main.Main()
 generator = generator_url.UrlGenerator()

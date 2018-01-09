@@ -48,7 +48,6 @@ class JsonReader:
         print('-' * 40)
 
         results_keys = list(results.keys())
-        results_keys.sort()
         for i in results_keys:
             print(i, results[i][0])
             print(' ' *6, results[i][1], '{:,}円(税込)'.format(results[i][2]),
